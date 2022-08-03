@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+
+		{% endblock %}
+	</head>
+	<body>
+		{% include "shared/_navbar.html.twig" %}
+		{% block body %}{% endblock %}
+		<div class="container mt-4">
+			<div class="row">
+				{% include "shared/_footer.html.twig" with {
+				'icone':'fas fa-truck',
+				'titre':'LIVRAISON OFFERTE',
+				'text':'Dés 100euros d\'achats en France Metropolitaine'
+			} %}
+			{% include "shared/_footer.html.twig" with {
+				'icone':'fas fa-check',
+				'titre':'SATISFAIT OU REMBOURSSÉE',
+				'text':'Vous disposez de 14 jours pour changer d\'avis'
+			} %}
+				{% include "shared/_footer.html.twig" with {
+				'icone':'fas fa-lock',
+				'titre':'PAIEMENT SÉCURISÉ',
+				'text':'Paiement par CB ou Paypal sécurisé par certificats SSL'
+			} %}
+			</div>
+		</div>
+	</body>
+</html>
