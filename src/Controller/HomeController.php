@@ -9,12 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'homepage')]
     public function homepage(ProductRepository $ProductRepository): Response
     {
-        $products = $ProductRepository->findby([], [], 3);
+        $products = $ProductRepository->findby([], [], 9);
 
-        return $this->render('home/index.html.twig', [
+        return $this->render('home/home.html.twig', [
             'products' => $products
         ]);
     }
