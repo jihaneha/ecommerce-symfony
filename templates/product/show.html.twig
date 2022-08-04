@@ -19,19 +19,29 @@
 		<div class="container-fluid">
 			<h1 class="mb-4 mt-4">{{ product.name }}({{ product.price / 100}}
 				EUR)</h1>
-			<div class="row">
-				<div class="col-4">
-					<img src="/images/{{product.mainpicture}}" alt="image du produit {{ product.name }}" class="img-fluid">
-				</div>
-				<div class="col">
-					<span class="badge badge-primary text-bg-dark">
-						{{product.category.name}}
-					</span>
-					<p class="card-text">{{ product.shortDescription }}</p>
-					<a href="#" class="btn btn-success btn-lg">
-						<i class="fas fas-shopping-cart"></i>
-						Ajouter au Panier
-					</a>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4 p-2 ">
+						<div class="thumbnail">
+							<div class="picture1">
+								<img src="/images/{{product.mainpicture}}" alt="image du produit {{ product.name }}" class="img-responsive img-fluid cards border text-center d-block mx-auto">
+							</div>
+							<div class="picture2">
+								<img src="/images/{{product.mainpicture2}}" alt="image du produit {{ product.name }}" class="img-responsive img-fluid cards border text-center d-block mx-auto">
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<span class="badge badge-primary text-bg-dark">
+							{{product.category.name}}
+						</span>
+						<p class="card-text">{{ product.shortDescription }}</p>
+						<a href="#" class="btn btn-success btn-lg">
+							<i class="fas fas-shopping-cart"></i>
+							Ajouter au Panier
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>

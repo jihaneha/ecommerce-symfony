@@ -4,26 +4,40 @@
 {% endblock %}
 
 {% block body %}
+	<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+		<div class="carousel-inner">
+			<div class="carousel-item active" data-bs-interval="5000">
+				<img src="{{asset("images/pexels-godisable-jacob-949670.jpg")}}" class="d-block w-100" alt="...">
+			</div>
+			<div class="carousel-item" data-bs-interval="5000">
+				<img src="{{asset("images/pexels-godisable-jacob-3689150.jpg")}}" class="d-block w-100" alt="...">
+			</div>
+			<div class="carousel-item" data-bs-interval="5000">
+				<img src="{{asset("images/pexels-godisable-jacob-3689122.jpg")}}" class="d-block w-100" alt="...">
+			</div>
+		</div>
+	</div>
 	<h1 class="text-center m-5">Les beaux jours arrivent !
 	</h1>
 	<div class="container">
 		<div class="row">
 			{% for p in products %}
-				<div class="col-4">
+				<div class="col-4 mb-5">
 					<div class="card">
 						<img src="/images/{{p.mainpicture}}" alt="image du produit {{ p.name }}" class="img-fluid">
 						<div class="card-body">
-							<h4 class="card-little">{{ p.name }}
+							<h6 class="card-little">{{ p.name }}
 								({{ p.price / 100}}
-								EUR )</h4>
-							<span class="badge badge-info text-bg-dark mb-2 mt-2">{{ p.category.name }}</span>
-							<p class="card-text">{{ p.shortDescription }}</p>
-							<a href="{{ path('product_show',{'category_slug':p.category.slug,'slug':p.slug}) }}" class="btn btn-secondary btn-sm">Détails</a>
+								EUR )</h6>
+							{# <span class="badge badge-info text-bg-dark mb-2 mt-2">{{ p.category.name }}</span> #}
+							{# <p class="card-text">{{ p.shortDescription }}</p> #}
+							<a href="{{ path('product_show',{'category_slug':p.category.slug,'slug':p.slug}) }}" class="btn btn-secondary btn-sm mb-2 mt-2">Détails</a>
 							<a href="#" class="btn btn-dark btn-sm">Ajouter</a>
 						</div>
 					</div>
 				</div>
 			{% endfor %}
+			<h4></h4>
 		</div>
 	</div>
 

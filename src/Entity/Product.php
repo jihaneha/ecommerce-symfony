@@ -32,6 +32,9 @@ class Product
     #[ORM\Column(type: Types::TEXT)]
     private ?string $shortDescription = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $mainpicture2 = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +108,18 @@ class Product
     public function setShortDescription(string $shortDescription): self
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
+    }
+
+    public function getMainpicture2(): ?string
+    {
+        return $this->mainpicture2;
+    }
+
+    public function setMainpicture2(string $mainpicture2): self
+    {
+        $this->mainpicture2 = $mainpicture2;
 
         return $this;
     }
