@@ -11,7 +11,27 @@
 			<li class="breadcrumb-item active" aria-current="page">{{category.name}}</li>
 		</ol>
 
-		<h1 class="mb-5">Categorie :{{category.name}}</h1>
+		{# <h4 class="mb-5">Categorie :
+							{{category.name}}</h4> #}
+		<div>
+			<ul class="d-flex justify-content-center m-5 ul-blazer">
+				<li class="m">
+					<a class="nav-link text-dark p-2" href="#">TOUT VOIR</a>
+				</li>
+				<li>
+					<a class="nav-link text-dark p-2" href="#">BASIQUES</a>
+				</li>
+				<li>
+					<a class="nav-link text-dark p-2" href="#">NOIRES</a>
+				</li>
+				<li>
+					<a class="nav-link text-dark p-2" href="#">CROPPPED</a>
+				</li>
+				<li>
+					<a class="nav-link text-dark p-2" href="#">JOIN LIFE</a>
+				</li>
+			</ul>
+		</div>
 		<div class="row">
 			{% for p in category.products %}
 				<div class="col-4 mb-5">
@@ -19,8 +39,7 @@
 						<img src="/images/{{p.mainpicture}}" alt="image du produit {{ p.name }}" class="img-fluid">
 						<div class="card-body">
 							<h6 class="card-little">{{ p.name }}
-								({{ p.price / 100}}
-								EUR )</h6>
+								({{ p.price / 100}}€)</h6>
 							{# <span class="badge badge-info text-bg-dark mb-2 mt-2">{{ p.category.name }}</span><p class="card-text">{{ p.shortDescription }}</p> #}
 							<a href="{{ path('product_show',{'category_slug':p.category.slug,'slug':p.slug}) }}" class="btn btn-secondary btn-sm mb-2 mt-2 ">Détails</a>
 							<a href="#" class="btn btn-dark btn-sm">Ajouter</a>
