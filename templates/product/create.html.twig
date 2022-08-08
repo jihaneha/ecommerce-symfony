@@ -1,0 +1,25 @@
+{% extends "base.html.twig"%}
+{% block title %}Creation d'un produit
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<h1>Nouveau produit</h1>
+		{{ form_start(formView) }}
+		{{ form_errors(formView) }}
+		<div class="row">
+			<div class="col">
+				{{ form_row(formView.name) }}
+				{{ form_row(formView.shortDescription) }}
+			</div>
+			<div class="col">
+				{{ form_row(formView.category) }}
+				{{ form_row(formView.price) }}</div>
+		</div>
+
+		<button type="submit" class="btn btn-primary mt-3">
+			Créer le produit
+		</button>
+
+		{{ form_end(formView) }}
+	</div>
+{% endblock %}
