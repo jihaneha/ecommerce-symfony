@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+{% block title %}Edition de
+	{{category.name}}
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<h1>Editer la categorie
+			{{category.name}}</h1>
+		{{ form_start(formView) }}
+		{{ form_widget(formView) }}
+
+		<button type="submit" class="btn btn-primary">Editer</button>
+		{{ form_end(formView) }}
+
+	</div>
+{% endblock %}
