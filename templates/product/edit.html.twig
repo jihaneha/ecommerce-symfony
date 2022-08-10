@@ -1,13 +1,12 @@
-{% extends "base.html.twig"%}
-
-{# {% form_theme formView "bootstrap_5_horizontal_layout.html.twig" %} #}
-
-{# _self si le theme est sur le meme fichier #}
-	{% block title %}
-Creation d'un produit
+{% extends "base.html.twig" %}
+{% block title %}Edition de
+	{{product.name}}
 {% endblock %}
-	{% block body %}
-		<div class="container"> <h1>Nouveau produit</h1>
+
+{% block body %}
+	<div class="container">
+		<h1>Editer le produit
+			{{product.name}}</h1>
 		{{ form_start(formView) }}
 		{{ form_errors(formView) }}
 		<div>
@@ -22,7 +21,7 @@ Creation d'un produit
 				{{ form_row(formView.price) }}</div>
 		</div>
 		<button type="submit" class="btn btn-primary mt-3">
-			Créer le produit
+			Editer le produit
 		</button>
 	</div>
 

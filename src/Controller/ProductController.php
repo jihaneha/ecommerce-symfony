@@ -3,18 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\Category;
+use App\Form\ProductType;
+use Doctrine\ORM\EntityManager;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\FormFactoryBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormFactoryBuilderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
@@ -53,54 +61,48 @@ class ProductController extends AbstractController
             'product' => $product,
         ]);
     }
+    //modifier un produit 
+
+    #[Route('/admin/product/{id}/edit', name: 'product_edit')]
+
+    public function edit($id, ProductRepository $productRepository, Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
+    {
+
+        $product = $productRepository->find($id);
+        $form = $this->createForm(ProductType::class, $product);
+        // $form->setData($product);
+        $form->handleRequest($request);
+        $formView = $form->createView();
+        if ($form->isSubmitted()) {
+            $product->setSlug(strtolower($slugger->slug($product->getName())));
+            $em->flush();
+        }
+        return $this->render('product/edit.html.twig', [
+            'product' => $product,
+            'formView' => $formView
+        ]);
+    }
+
     // formulaire de création d'un produit
 
     #[Route('/admin/product/create', name: 'product_create')]
-
-    public function create(FormFactoryInterface $factory, CategoryRepository $categoryRepository)
+    // je me fait livrer par gestion d'indépendance une FormFactoryIntefrace
+    public function create(FormFactoryInterface $factory, Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
     {
-        $builder = $factory->createBuilder();
-        // les champs du formulaire 
-        $builder->add("name", TextType::class, [
-            "label" => "nom du produit",
-            "attr" => [
-                'class' => "form-control",
-                "placeholder" => "Veuillez saisir le nom du produit"
-            ]
-        ])
-            ->add("shortDescription", TextareaType::class, [
-                "label" => "description courte",
-                "attr" => [
-                    'class' => "form-control",
-                    "placeholder" => "Veuillez saisir une petite description"
-                ]
-            ])
-            ->add("price", MoneyType::class, [
-                "label" => "prix du produit",
-                "attr" => [
-                    'class' => "form-control",
-                    "placeholder" => "Veuillez saisir le prix du produit en €"
-                ]
-            ]);
-        $options = [];
-        foreach ($categoryRepository->findAll() as $category) {
-            $options[$category->getName()] = $category->getId();
+        $product = new Product;
+        $form = $this->createForm(ProductType::class, $product);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+
+            $product->setSlug(strtolower($slugger->slug($product->getName())));
+            $em->persist($product);
+            $em->flush();
         }
 
-        $builder->add("category", ChoiceType::class, [
-            "label" => "Category",
-            "attr" => [
-                'class' => "form-control"
-            ],
-            "placeholder" => "--choisir une categorie --",
-            "choices" => $options
-        ]);
-        $form = $builder->getForm();
-
-        // la classe form est immense elle permet de representer la config du formulaire et traiter les requete faire la validation etc twig ne va pas s'en sortir avec cette classe c'est pour ça qu'on va extraire une autre class formview
-
         $formView = $form->createView();
-        // une petite classe qui permet seulement l'affichage du formulaire et c'est ce qu'on va passer a twig
+
         return $this->render('product/create.html.twig', ['formView' => $formView]);
     }
+    // on peut rajouter une methode $builder->setMethod("GET"); et aussi une action $builder->setAction(/quelquechose);
 }
