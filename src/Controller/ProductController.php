@@ -26,10 +26,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController extends AbstractController
 {
     #[Route('/{slug}', name: 'product_category')]
+
     public function category($slug, CategoryRepository $CategoryRepository): Response
     {
         $category = $CategoryRepository->findOneBy([
@@ -66,7 +68,7 @@ class ProductController extends AbstractController
 
     #[Route('/admin/product/{id}/edit', name: 'product_edit')]
 
-    public function edit($id, ProductRepository $productRepository, Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator)
+    public function edit($id, ProductRepository $productRepository, Request $request, SluggerInterface $slugger, EntityManagerInterface $em, ValidatorInterface $validator)
     {
 
         $product = $productRepository->find($id);
@@ -75,7 +77,8 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+
             $product->setSlug(strtolower($slugger->slug($product->getName())));
             $em->flush();
             //redirection vers la page du produit modifié

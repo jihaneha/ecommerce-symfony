@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+<nav class="navbar navbar-expand-lg navbar-light">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="{{ path('homepage') }}"><img src="{{asset("images/GIGISBRAND.png")}}" alt=""></a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,9 +9,8 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">FEMME</a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" href="{{ path('homepage') }}">Acceuil</a>
 						{% for c in categoryRepository.findAll() %}
-							<a class="dropdown-item" href="">{{ c.name }}</a>
+							<a class="dropdown-item" href="{{ path('product_category',{'slug': c.slug }) }}">{{ c.name }}</a>
 						{% endfor %}
 					</div>
 				</li>
