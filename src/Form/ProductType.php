@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\Category;
-use Symfony\Component\HttpFoundation\File\File;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -42,18 +42,14 @@ class ProductType extends AbstractType
                 ],
                 "divisor" => 100
             ])
-            ->add("mainPicture", TextType::class, [
+            ->add("mainpicture", FileType::class, [
                 "label" => "image du produit",
-                "attr" => [
-                    "placeholder" => "Veuillez saisir l'url de l'image'"
-                ],
+                "mapped" => false,
 
             ])
-            ->add("mainPicture2", TextType::class, [
+            ->add("mainpicture2", FileType::class, [
                 "label" => "une autre image du produit",
-                "attr" => [
-                    "placeholder" => "Veuillez saisir l'url de l'image'"
-                ],
+                "mapped" => false,
             ])
             ->add("category", EntityType::class, [
                 "label" => "Category",

@@ -3,7 +3,6 @@
 	{{product.name}}
 {% endblock %}
 {% block body %}
-
 	<div class="container">
 
 		<ol class="breadcrumb">
@@ -37,7 +36,7 @@
 							{{product.category.name}}
 						</span>
 						<p class="card-text">{{ product.shortDescription }}</p>
-						<a href="#" class="btn btn-success btn-lg">
+						<a href="{{ path('cart_add',{'id': product.id})}}" class="btn btn-success btn-lg">
 							<i class="fas fas-shopping-cart"></i>
 							Ajouter au Panier
 						</a>

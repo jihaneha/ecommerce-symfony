@@ -8,6 +8,7 @@ use App\Form\ProductType;
 use Doctrine\ORM\EntityManager;
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
+use App\Service\UploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +31,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductController extends AbstractController
 {
-    #[Route('/{slug}', name: 'product_category')]
+    #[Route('/{slug}', name: 'product_category', priority: -1)]
+
+    // on mets une priorité negative pour ne pas avoir de soucie pour les autres routes /login par ou /logout
 
     public function category($slug, CategoryRepository $CategoryRepository): Response
     {
@@ -99,13 +102,21 @@ class ProductController extends AbstractController
 
     #[Route('/admin/product/create', name: 'product_create')]
     // je me fait livrer par gestion d'indépendance une FormFactoryIntefrace
-    public function create(FormFactoryInterface $factory, Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
+    public function create(FormFactoryInterface $factory, Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploaderService $uploaderService)
     {
         $product = new Product;
         $form = $this->createForm(ProductType::class, $product);
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            $photo = $form->get('mainpicture')->getData();
+            $photo2 = $form->get('mainpicture2')->getData();
+
+            if ($photo || $photo2) {
+                $directory = $this->getParameter('images_directory');
+                $product->setMainpicture($uploaderService->uploadFile($photo, $directory));
+                $product->setMainpicture2($uploaderService->uploadFile($photo2, $directory));
+            }
 
             $product->setSlug(strtolower($slugger->slug($product->getName())));
             $em->persist($product);
