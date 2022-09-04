@@ -19,20 +19,27 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
+    //le nom de la route de la page login
+
     public const LOGIN_ROUTE = 'security_login';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
-
+    //l'objet passport permer de gerer l'authentication des utilisateurs
     public function authenticate(Request $request): Passport
     {
+        // on recupere l'email depuis la requett on le sauvegarde et ensuite on genere un passport
         $email = $request->request->get('email', '');
 
+        //on insere le dernier utilisateur dans la session 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
+        //on retourne le passport
         return new Passport(
+            //le userbadge cherche l'utilisateur par son email
             new UserBadge($email),
+            //on resupere le mdp qui a ete taper
             new PasswordCredentials($request->request->get('password', '')),
             [
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
@@ -42,13 +49,14 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        // targetPath est le point de retour de l'utilisateur là ou il etait connecter
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
+        // For example: on rederige l'utilisateur vers la page d'acceuil
+        return new RedirectResponse($this->urlGenerator->generate('homepage'));
+        // throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
     }
 
     protected function getLoginUrl(Request $request): string

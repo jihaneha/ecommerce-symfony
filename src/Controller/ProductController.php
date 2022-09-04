@@ -53,7 +53,7 @@ class ProductController extends AbstractController
 
     // gestion de panier 
 
-    #[Route('/{category_slug}/{slug}', name: 'product_show')]
+    #[Route('/{category_slug}/{slug}', name: 'product_show', priority: -1)]
 
     public function show(Product $product, $category_slug, CategoryRepository $CategoryRepository)
     {
