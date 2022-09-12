@@ -60,7 +60,6 @@ class CategoryController extends AbstractController
     }
     #[Route('/admin/category/{id}/edit', name: 'category_edit')]
     // #[IsGranted('ROLE_ADMIN', message: "Vous n'avez pas le droit d'accéder à cette ressource")]
-    #[IsGranted('CAN_EDIT', subject: "id")]
     public function edit($id, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em, SluggerInterface $slugger)
     {
         //si l'utilisateur n'a pas le role admin , il ne peut pas modifier les categories
@@ -85,7 +84,7 @@ class CategoryController extends AbstractController
 
         // $this->isGranted('CAN_EDIT', $category);
 
-        // $this->denyAccessUnlessGranted('CAN_EDIT', $category, "vous n'etes pas le propriétaire de cette categorie");
+        // $this->denyAccessUnlessGranted('CAN_EDIT', $category->getId(), "vous n'etes pas le propriétaire de cette categorie");
 
         $form = $this->createForm(CategoryType::class, $category);
 
