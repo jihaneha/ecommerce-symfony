@@ -3,31 +3,25 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Entity\Category;
+
 use App\Form\ProductType;
-use Doctrine\ORM\EntityManager;
+
 use App\Repository\ProductRepository;
 use App\Repository\CategoryRepository;
 use App\Service\UploaderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
-use Symfony\Component\Form\FormFactoryBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Twig\Environment;
 
 class ProductController extends AbstractController
 {
@@ -133,4 +127,26 @@ class ProductController extends AbstractController
         return $this->render('product/create.html.twig', ['formView' => $formView]);
     }
     // on peut rajouter une methode $builder->setMethod("GET"); et aussi une action $builder->setAction(/quelquechose);
+
+    // fonction pour afficher les commandes des utilisateurs 
+    #[Route('/purchases', name: 'purchases_index')]
+
+    public function index()
+    {
+        //  vérifier si la personne est connectée sinon redirection vers la page d'acceuil
+        /** @var User */
+        $user = $this->getUser();
+
+        if (!$user) {
+            // si l'utilisateur n'est pas connecter il sera rediriger vers la page d'acceuil
+            $url = $this->router->generate('homepage');
+            return new RedirectResponse($url);
+        }
+
+        // passer l'utilisateur connecter à twig afin d'afficher les commandes 
+
+        return $this->render('purchase/index.html.twig', [
+            'purchases' => $user->getPurchases()
+        ]);
+    }
 }

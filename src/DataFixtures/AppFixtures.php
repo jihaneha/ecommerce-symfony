@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use Faker\Provider\DateTime;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Purchase;
@@ -60,6 +61,7 @@ class AppFixtures extends Fixture
                 ->setCity($faker->city)
                 ->setUser($faker->randomElement($users))
                 ->setTotal(mt_rand(2000, 30000));
+            // ->setPurchasedAt($faker->dateTimeBetween($startDate = '-6 months', $endDate = 'now'));
 
             if ($faker->boolean(90)) {
                 $purchase->setStatus(Purchase::STATUS_PAID);

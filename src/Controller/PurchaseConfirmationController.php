@@ -4,17 +4,16 @@ namespace App\Controller;
 
 use App\Cart\CartService;
 use App\Entity\Purchase;
+use App\Entity\PurchaseItem;
 use App\Form\CartConfirmationType;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException as ExceptionAccessDeniedException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Security;
+
+
 
 class PurchaseConfirmationController extends AbstractController
 {
@@ -27,25 +26,22 @@ class PurchaseConfirmationController extends AbstractController
     protected $em;
 
 
-    public function __construct(FormFactoryInterface $formFactory, RouterInterface $router, Security $security, CartService $cartService, EntityManagerInterface $em)
+    public function __construct(CartService $cartService, EntityManagerInterface $em)
     {
-        $this->router = $router;
-        $this->formFactory = $formFactory;
-        $this->security = $security;
         $this->cartService = $cartService;
         $this->em = $em;
     }
 
 
     #[Route('/purchase/confirm', name: 'purchase_confirm')]
-
+    #[IsGranted('ROLE_USER', message: 'vous devez être connecter pour confirmer une commande')]
     public function confirm(Request $request)
     {
         //lire les données du formulaires 
 
         //Request
 
-        $form = $this->formFactory->create(CartConfirmationType::class);
+        $form = $this->createForm(CartConfirmationType::class);
 
         // j'annalyse la request je peux pas la demandée au constructeur car elle est unique au constructeur en demande des services qui change pas 
 
@@ -57,20 +53,21 @@ class PurchaseConfirmationController extends AbstractController
             //message flash puis redirection
             //le flashbag est relier a la session = la requete du coup je peux pas le demander au constructeur
             $this->addFlash('warning', 'vous devez remplir le formulaire de confirmation');
-            return new RedirectResponse($this->router->generate('cart_show'));
+            return $this->redirectToRoute('cart_show');
         }
         // si je ne suis pas connecter 
-        $user = $this->security->getUser();
+        $user = $this->getUser();
 
-        if (!$user) {
-            throw new ExceptionAccessDeniedException("vous devez etre connecter pour confirmer une commande");
-        }
+        // if (!$user) {
+        //     $url = $this->router->generate('security_login');
+        //     return new RedirectResponse($url);
+        // }
 
         //si le panier est vide
         $cartItems = $this->cartService->getDetailedCartItems();
         if (count($cartItems) === 0) {
             $this->addFlash('warning', 'vous ne pouvez pas confirmer la commande avec un panier vide');
-            return new RedirectResponse($this->router->generate('cart_show'));
+            return $this->redirectToRoute('cart_show');
         }
 
         //nous creons une purchase
@@ -79,30 +76,30 @@ class PurchaseConfirmationController extends AbstractController
 
         //nous allons la lier avec l'utilisateur connecté
         $purchase->setUser($user)
-            ->setPurchasedAt(new DateTime());
+            ->setPurchasedAt(new DateTimeImmutable())
+            ->setTotal($this->cartService->getTotal());
         $this->em->persist($purchase);
         //nous allons la lier avec les produits dans le panier
-
-        $total = 0;
 
         foreach ($this->cartService->getDetailedCartItems() as $cartItem) {
             $purchaseItem = new PurchaseItem;
             $purchaseItem->setPurchase($purchase)
                 ->setProduct($cartItem->product)
-                ->setProductName($cartItem->product->getPrice())
-                ->setQuatity($cartItem->qty)
-                ->setTotal($cartItem->getTotal)
-                ->setProductPrice($cartItem->product->getPrice);
+                ->setProductName($cartItem->product->getName())
+                ->setQuantity($cartItem->qty)
+                ->setTotal($cartItem->getTotal())
+                ->setProductPrice($cartItem->product->getPrice());
 
-            $total += $cartItem->getTotal;
             $this->em->persist($purchaseItem);
         }
 
-        $purchase->setTotal($total);
         //nous allons enregistrer la commande
 
         $this->em->flush();
+
+        $this->cartService->empty();
+
         $this->addFlash('success', 'la commande à bien été enregistrée');
-        return new RedirectResponse($this->router->generate('purchase_index'));
+        return $this->redirectToRoute('purchases_index');
     }
 }

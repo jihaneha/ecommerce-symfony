@@ -16,6 +16,15 @@ class CartService
         $this->requestStack = $requestStack;
         $this->productRepository = $productRepository;
     }
+    protected function saveCart(array $cart)
+    {
+        $this->requestStack->getSession()->set('cart', $cart);
+    }
+    //pour vider le panier quand l'utilisateur passe une commande
+    public function empty()
+    {
+        $this->saveCart([]);
+    }
     public function add(int $id)
     {
         // retrouver le panier dans la session sous forme de tableau et s'il n'existe pas prendre un tableau vide
