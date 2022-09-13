@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 13 sep. 2022 à 09:27
+-- Généré le : mar. 13 sep. 2022 à 20:08
 -- Version du serveur : 5.7.36
 -- Version de PHP : 7.4.26
 
@@ -76,7 +76,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 ('DoctrineMigrations\\Version20220823071448', '2022-08-23 07:15:14', 164),
 ('DoctrineMigrations\\Version20220904113817', '2022-09-04 11:40:20', 289),
 ('DoctrineMigrations\\Version20220912163405', '2022-09-12 16:41:08', 266),
-('DoctrineMigrations\\Version20220912172904', '2022-09-12 17:29:57', 279);
+('DoctrineMigrations\\Version20220912172904', '2022-09-12 17:29:57', 279),
+('DoctrineMigrations\\Version20220913181800', '2022-09-13 18:18:31', 88),
+('DoctrineMigrations\\Version20220913182946', '2022-09-13 18:29:59', 1036);
 
 -- --------------------------------------------------------
 
@@ -153,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `purchase` (
   `purchased_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   PRIMARY KEY (`id`),
   KEY `IDX_6117D13BA76ED395` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `purchase`
@@ -186,22 +188,47 @@ INSERT INTO `purchase` (`id`, `user_id`, `full_name`, `adress`, `postal_code`, `
 (50, 17, 'Auguste-Grégoire Bourgeois', '299, avenue de Bourgeois', '95 336', 'Texier', 28602, 'PAID', '2022-09-12 18:41:08'),
 (51, 17, 'Alfred Mahe', '4, boulevard Fischer', '88421', 'Ruiz', 4946, 'PAID', '2022-09-12 18:41:08'),
 (52, 15, 'Marcelle Vincent', '19, place Christophe Simon', '85341', 'Jacobboeuf', 10745, 'PAID', '2022-09-12 18:41:08'),
-(53, 16, 'Guy Gros', '85, impasse de Guerin', '47458', 'Mercier-les-Bains', 4230, 'PAID', '2022-09-12 18:41:08');
+(53, 16, 'Guy Gros', '85, impasse de Guerin', '47458', 'Mercier-les-Bains', 4230, 'PAID', '2022-09-12 18:41:08'),
+(54, 16, 'jihane hamidou', '406 Boulevard Romain Rolland', '13009', 'Marseille 09', 5998, 'PENDING', '2022-09-13 19:07:30'),
+(55, 16, 'jihane hamidou', '406 Boulevard Romain Rolland', '13009', 'Marseille 09', 5998, 'PENDING', '2022-09-13 19:08:20'),
+(56, 16, 'test test', 'test test test', '13009', 'Marseille', 6998, 'PENDING', '2022-09-13 19:15:36'),
+(57, 15, 'user', 'test', '13010', 'Marseille', 9998, 'PENDING', '2022-09-13 19:19:40'),
+(58, 15, 'jihane hamidou', '406 Boulevard Romain Rolland', '13009', 'Marseille', 4999, 'PENDING', '2022-09-13 19:39:20'),
+(59, 15, 'jiji', 'jijijijjj', '13009', 'Marseille', 14997, 'PENDING', '2022-09-13 19:52:11'),
+(60, 15, 'jihane hamidou', '406 Boulevard Romain Rolland', '13009', 'Marseille', 14997, 'PENDING', '2022-09-13 19:54:06');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `purchase_product`
+-- Structure de la table `purchase_item`
 --
 
-DROP TABLE IF EXISTS `purchase_product`;
-CREATE TABLE IF NOT EXISTS `purchase_product` (
+DROP TABLE IF EXISTS `purchase_item`;
+CREATE TABLE IF NOT EXISTS `purchase_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) DEFAULT NULL,
   `purchase_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  PRIMARY KEY (`purchase_id`,`product_id`),
-  KEY `IDX_C890CED4558FBEB9` (`purchase_id`),
-  KEY `IDX_C890CED44584665A` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_price` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_6FA8ED7D4584665A` (`product_id`),
+  KEY `IDX_6FA8ED7D558FBEB9` (`purchase_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `purchase_item`
+--
+
+INSERT INTO `purchase_item` (`id`, `product_id`, `purchase_id`, `product_name`, `product_price`, `quantity`, `total`) VALUES
+(3, 38, 56, 'ENSEMBLE JUPE', 3999, 1, 3999),
+(4, 39, 56, 'ROBE COURTE', 2999, 1, 2999),
+(5, 36, 57, 'VESTE OVERSIZE', 4999, 1, 4999),
+(6, 35, 57, 'BLAZER DROIT', 4999, 1, 4999),
+(7, 33, 58, 'ROBE FLEURIE', 4999, 1, 4999),
+(8, 33, 59, 'ROBE FLEURIE', 4999, 3, 14997),
+(9, 33, 60, 'ROBE FLEURIE', 4999, 3, 14997);
 
 -- --------------------------------------------------------
 
@@ -255,11 +282,11 @@ ALTER TABLE `purchase`
   ADD CONSTRAINT `FK_6117D13BA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
--- Contraintes pour la table `purchase_product`
+-- Contraintes pour la table `purchase_item`
 --
-ALTER TABLE `purchase_product`
-  ADD CONSTRAINT `FK_C890CED44584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `FK_C890CED4558FBEB9` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE;
+ALTER TABLE `purchase_item`
+  ADD CONSTRAINT `FK_6FA8ED7D4584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FK_6FA8ED7D558FBEB9` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
