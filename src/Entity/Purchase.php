@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PurchaseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
@@ -35,6 +37,17 @@ class Purchase
 
     #[ORM\ManyToOne(inversedBy: 'purchases')]
     private ?User $user = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $purchasedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'purchases')]
+    private Collection $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,6 +134,42 @@ class Purchase
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPurchasedAt(): ?\DateTimeImmutable
+    {
+        return $this->purchasedAt;
+    }
+
+    public function setPurchasedAt(\DateTimeImmutable $purchasedAt): self
+    {
+        $this->purchasedAt = $purchasedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        $this->products->removeElement($product);
 
         return $this;
     }

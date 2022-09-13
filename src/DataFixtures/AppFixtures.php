@@ -64,6 +64,7 @@ class AppFixtures extends Fixture
             if ($faker->boolean(90)) {
                 $purchase->setStatus(Purchase::STATUS_PAID);
             }
+            //on persiste toujours quand ça n'xiste pas dans la base de données 
             $manager->persist($purchase);
         }
 

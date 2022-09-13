@@ -18,7 +18,23 @@
 			</ul>
 			<div class="d-flex">
 				<ul class="navbar-nav me-auto">
+					<li>
+						<a href="#" class="nav-link">
+							<i class=" far fa-heart"></i>
+						</a>
+					</li>
+					<li>
+						<a href="{{path('cart_show')}}" class="nav-link">
+							<i class="fas fa-shopping-cart"></i>
+							({{ cartService.total / 100}})
+						</a>
+					</li>
 					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="#">
+								Mes commandes
+							</a>
+						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="{{path('app_logout')}}">
 								Se déconnecter
@@ -31,19 +47,6 @@
 							</a>
 						</li>
 					{% endif %}
-
-
-					<li>
-						<a href="#" class="nav-link">
-							<i class=" far fa-heart"></i>
-						</a>
-					</li>
-					<li>
-						<a href="{{path('cart_show')}}" class="nav-link">
-							<i class="fas fa-shopping-cart"></i>
-							({{ cartService.total / 100}})
-						</a>
-					</li>
 				</ul>
 			</div>
 		</div>
