@@ -4,31 +4,23 @@
 {% endblock %}
 
 {% block body %}
-	<div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-		<div class="carousel-inner">
-			<div class="carousel-item active" data-bs-interval="5000">
-				<img src="{{asset("images/pexels-godisable-jacob-949670.jpg")}}" class="d-block w-100" alt="...">
-			</div>
-			<div class="carousel-item" data-bs-interval="5000">
-				<img src="{{asset("images/pexels-godisable-jacob-3689150.jpg")}}" class="d-block w-100" alt="...">
-			</div>
-			<div class="carousel-item" data-bs-interval="5000">
-				<img src="{{asset("images/pexels-godisable-jacob-3689122.jpg")}}" class="d-block w-100" alt="...">
-			</div>
-		</div>
-	</div>
-	<h1 class="text-center m-5">Les beaux jours arrivent !
+	{% include "home/_caroussel.html.twig" %}
+	<h1 class="text-center my-5">Les beaux jours arrivent !
 	</h1>
 	<div class="container">
 		<div class="row">
 			{% for p in products %}
-				<div class="col-4 mb-5">
+				<div class="col-lg-4 col-md-6 mb-5">
 					{% include "product/_product_card.html.twig" %}
 				</div>
 			{% endfor %}
-			<h4></h4>
 		</div>
 	</div>
-	<p class="text-center">FRAIS DE PORT GRATUIT A PARTIR DE 80 EUROS D'ACHAT</p>
+	<p class="text-center my-5">FRAIS DE PORT GRATUIT A PARTIR DE 80 EUROS D'ACHAT</p>
+
+
+	{% include "product/_carousselProduct.html.twig" %}
+
+
 {% endblock %}
 {% block footer %}{% endblock %}

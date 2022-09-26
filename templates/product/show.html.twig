@@ -5,22 +5,21 @@
 {% block body %}
 	<div class="container">
 
-		<ol class="breadcrumb">
+		<ol class="breadcrumb mt-5">
 			<li class="breadcrumb-item">
-				<a href="{{ path('homepage') }}">Acceuil</a>
+				<a class="text-dark" href="{{ path('homepage') }}">Acceuil</a>
 			</li>
 			<li class="breadcrumb-item">
-				<a href="{{ path('product_category',{'slug':product.category.slug})}}">{{product.category.name}}</a>
+				<a class="text-dark" href="{{ path('product_category',{'slug':product.category.slug})}}">{{product.category.name}}</a>
 			</li>
 			<li class="breadcrumb-item active" aria-current="page">{{product.name}}</li>
 		</ol>
-
 		<div class="container-fluid">
-			<h1 class="mb-4 mt-4">{{ product.name }}({{ product.price / 100}}
-				EUR)</h1>
+			<h2 class="mb-4 mt-4">{{ product.name }}({{ product.price / 100}}
+				EUR)</h2>
 			<div class="container">
 				<div class="row">
-					<div class="col-md-4 p-2 ">
+					<div class="col-lg-4 col-md-6 p-2 mb-5">
 						<div class="thumbnail">
 							<div class="picture1">
 								<img src="/images/{{product.mainpicture}}" alt="image du produit {{ product.name }}" class="img-responsive img-fluid cards border text-center d-block mx-auto">
@@ -32,7 +31,7 @@
 					</div>
 
 					<div class="col">
-						<span class="badge badge-primary text-bg-dark">
+						<span class="badge badge-primary text-bg-dark py-2 my-4">
 							{{product.category.name}}
 						</span>
 						<p class="card-text">{{ product.shortDescription }}</p>
@@ -46,3 +45,4 @@
 		</div>
 	</div>
 {% endblock %}
+{% block footer %}{% endblock %}

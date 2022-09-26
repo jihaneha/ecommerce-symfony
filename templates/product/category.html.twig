@@ -3,42 +3,45 @@
 	{{slug}}
 {% endblock %}
 {% block body %}
-	<div class="container">
-		<ol class="breadcrumb">
+	<div class="container mt-5">
+		<ol class="breadcrumb mb-5">
 			<li class="breadcrumb-item">
-				<a href="{{ path('homepage') }}">Acceuil</a>
+				<a class="text-dark" href="{{ path('homepage') }}">Acceuil</a>
 			</li>
 			<li class="breadcrumb-item active" aria-current="page">{{category.name}}</li>
 		</ol>
 
 		{# <h4 class="mb-5">Categorie :
-																	{{category.name}}</h4> #}
-		<div>
-			<ul class="d-flex justify-content-center m-5 ul-blazer">
-				<li class="m">
-					<a class="nav-link text-dark p-2" href="#">TOUT VOIR</a>
-				</li>
-				<li>
-					<a class="nav-link text-dark p-2" href="#">BASIQUES</a>
-				</li>
-				<li>
-					<a class="nav-link text-dark p-2" href="#">NOIRES</a>
-				</li>
-				<li>
-					<a class="nav-link text-dark p-2" href="#">CROPPPED</a>
-				</li>
-				<li>
-					<a class="nav-link text-dark p-2" href="#">JOIN LIFE</a>
-				</li>
-			</ul>
-		</div>
+																																					{{category.name}}</h4> #}
+		{# <div>
+																					<ul class="d-flex justify-content-center m-5 ul-blazer">
+																						<li class="m">
+																							<a class="nav-link text-dark p-2" href="#">TOUT VOIR</a>
+																						</li>
+																						<li>
+																							<a class="nav-link text-dark p-2" href="#">BASIQUES</a>
+																						</li>
+																						<li>
+																							<a class="nav-link text-dark p-2" href="#">NOIRES</a>
+																						</li>
+																						<li>
+																							<a class="nav-link text-dark p-2" href="#">CROPPPED</a>
+																						</li>
+																						<li>
+																							<a class="nav-link text-dark p-2" href="#">JOIN LIFE</a>
+																						</li>
+																					</ul>
+																				</div> #}
 		<div class="row">
 			{% for p in category.products %}
-				<div class="col-4 mb-5">
+				<div class="col-lg-4 col-md-6 mb-5">
 					{% include "product/_product_card.html.twig" %}
 				</div>
 			{% endfor %}
 		</div>
 	</div>
 
+
 {% endblock %}
+
+{% block footer %}{% endblock %}

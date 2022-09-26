@@ -6,9 +6,10 @@ body {
     padding: 0px;
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
     list-style-type: none;
-    text-decoration: none;
+    text-decoration: none !important;
     box-sizing: border-box;
 }
+
 .picture2 {
     display: none;
   }
@@ -21,4 +22,124 @@ body {
   .thumbnail:hover .picture2 {
     display: block;
   }
+
+
+/* 
+---------------------------------------------
+banner home page
+--------------------------------------------- 
+*/
+
+.main-banner {
+  border-bottom: 3px dotted #eee;
+  padding-top: 160px;
+  padding-bottom: 30px;
+}
+
+.main-banner .left-content .thumb img {
+  width: 100%;
+  overflow: hidden;
+}
+
+.main-banner .left-content .inner-content {
+  position: absolute;
+  left: 100px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.main-banner .left-content .inner-content h4 {
+  color: #fff;
+  margin-top: -10px;
+  font-size: 52px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.main-banner .left-content .inner-content span {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 400;
+  font-style: italic;
+  display: block;
+  margin-bottom: 30px;
+}
+
+.main-banner .right-content .right-first-image {
+  margin-bottom: 28.5px;
+}
+
+.main-banner .right-content .right-first-image .thumb {
+  position: relative;
+  text-align: center;
+}
+
+.main-banner .right-content .right-first-image .thumb img {
+  width: 100%;
+  overflow: hidden;
+}
+
+.main-banner .right-content .right-first-image .thumb .inner-content {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  text-align: center;
+}
+
+.main-banner .right-content .right-first-image .thumb .inner-content h4 {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.main-banner .right-content .right-first-image .thumb .inner-content span {
+  font-size: 16px;
+  color: #fff;
+  font-style: italic;
+}
+
+.main-banner .right-content .right-first-image .thumb .hover-content {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  left: 15px;
+  bottom: 15px;
+  text-align: center;
+  background-color: rgba(42,42,42,.97);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+
+.main-banner .right-content .right-first-image .thumb:hover .hover-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+.main-banner .right-content .right-first-image .thumb .hover-content .inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.main-banner .right-content .right-first-image .thumb .hover-content h4 {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.main-banner .right-content .right-first-image .thumb .hover-content p {
+  color: #fff;
+  padding: 0px 20px;
+  margin-bottom: 20px;
+}
+
+
+
+
 @import "~bootstrap/scss/bootstrap";

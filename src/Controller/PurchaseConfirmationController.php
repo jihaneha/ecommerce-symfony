@@ -97,9 +97,13 @@ class PurchaseConfirmationController extends AbstractController
 
         $this->em->flush();
 
-        $this->cartService->empty();
+        //une fois la commande est confirmé l'utilisateur doit etre rediriger vers la page de payement 
 
-        $this->addFlash('success', 'la commande à bien été enregistrée');
-        return $this->redirectToRoute('purchases_index');
+        // $this->cartService->empty();
+
+        // $this->addFlash('success', 'la commande à bien été enregistrée');
+        return $this->redirectToRoute('purchase_payment_form', [
+            'id' => $purchase->getId()
+        ]);
     }
 }

@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light">
+{# <nav class="navbar navbar-expand-lg navbar-light">
 	<div
-		class="container-fluid">
+		class="container-fluid"> #}
 		{# <a class="navbar-brand" href="{{ path('homepage') }}"><img src="{{asset("images/GIGISBRAND.png")}}" alt=""></a> #}
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+		{# <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarColor03">
@@ -50,5 +50,62 @@
 				</ul>
 			</div>
 		</div>
+	</div>
+</nav> #}
+
+{# 
+bootstrap nav #}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse mx-3 my-1" id="navbarTogglerDemo01">
+		{# <a class="navbar-brand" href="#">Hidden brand</a> #}
+		{# <a class="nav-link text-dark" href="{{ path('homepage')}}">ACCEUIL</a> #}
+			<ul class="navbar-nav mr-auto mt-2 mt-lg-0"> <li class="nav-item active">
+				<a class="nav-link text-dark" href="{{ path('homepage')}}">ACCEUIL</a>
+			</li>
+			{% for c in categoryRepository.findAll() %}
+
+				<li class="nav-item active">
+					<a class="nav-link text-dark" href="{{ path('product_category',{'slug': c.slug }) }}">{{ c.name }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+		<div class="d-flex">
+			<ul class="navbar-nav me-auto">
+				<li>
+					<a href="#" class="nav-link active">
+						<i class="far fa-heart"></i>
+					</a>
+				</li>
+				<li>
+					<a href="{{path('cart_show')}}" class="nav-link active">
+						<i class="fas fa-shopping-cart"></i>
+						({{ cartService.total / 100}})
+					</a>
+				</li>
+				{% if app.user %}
+					<li class="nav-item active">
+						<a class="nav-link" href="{{path('purchases_index')}}">
+							MES COMMANDES
+						</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="{{path('app_logout')}}">
+							SE DÉCONNECTER
+						</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link active" href="{{path('security_login')}}">
+							<i class="fas fa-user"></i>
+						</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+
 	</div>
 </nav>
