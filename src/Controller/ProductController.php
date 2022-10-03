@@ -96,7 +96,7 @@ class ProductController extends AbstractController
 
     #[Route('/admin/product/create', name: 'product_create')]
     // je me fait livrer par gestion d'indépendance une FormFactoryIntefrace
-    public function create(FormFactoryInterface $factory, Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploaderService $uploaderService)
+    public function create(Request $request, SluggerInterface $slugger, EntityManagerInterface $em, UploaderService $uploaderService)
     {
         $product = new Product;
         $form = $this->createForm(ProductType::class, $product);
