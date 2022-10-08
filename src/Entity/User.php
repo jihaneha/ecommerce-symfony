@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 
@@ -22,6 +23,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    // #[Assert\NotBlank(message = "error : le nom de la catégorie est obligatoir !")]
+    /**
+     * @Assert\NotBlank(message="error : l'adresse email est obligatoir !")
+     */
+
     private ?string $email = null;
 
     #[ORM\Column]
@@ -34,6 +40,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    /**
+     * @Assert\NotBlank(message="error : le nom de la catégorie est obligatoir !")
+     * @Assert\Length(min=3, minMessage="le nom doit faire au moin 3 caractères")
+     */
     private ?string $fullName = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Purchase::class)]
@@ -47,6 +57,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->purchases = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
+    // public function __toString()
+    // {
+    //     return $this->getEmail();
+    // }
 
     public function getId(): ?int
     {

@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security\UserAuthenticator;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
@@ -23,12 +24,13 @@ class RegisterController extends AbstractController
         //je creer un utilisateur
         $user = new User();
         //je creer le formulaire correspondant
-        $form = $this->createForm(RegisterType::class);
+        $form = $this->createForm(RegisterType::class, $user);
         //je gere le formulaire 
         $form->handleRequest($request);
         //si le formulaire est bon je gere l'inscription
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $user->setPassword(
                 //hasher le mdp et le stocker en bdd
                 $userPasswordHasher->hashPassword(
@@ -36,9 +38,25 @@ class RegisterController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+            $user = $form->getData();
+            // on envois l'email de verification 
+
+            // $email = (new Email())
+            //     ->from('hello@example.com')
+            //     ->to('you@example.com')
+            //     ->subject('Time for Symfony Mailer!')
+            //     ->text('Sending emails is fun again!')
+            //     ->html('<p>See Twig integration for better HTML integration!</p>');
+
+            // $mailer->send($email);
+
             //on inscris dans la bdd
             $em->persist($user);
+            //nous allons enregistrer l'utilisateu
+
             $em->flush();
+            $this->addFlash('success', 'Votre compte à été créer avec succée ');
+            return $this->redirectToRoute('security_login');
         }
 
 

@@ -75,11 +75,11 @@ bootstrap nav #}
 		</ul>
 		<div class="d-flex">
 			<ul class="navbar-nav me-auto">
-				<li>
+				{# <li>
 					<a href="#" class="nav-link active">
 						<i class="far fa-heart"></i>
 					</a>
-				</li>
+				</li> #}
 				<li>
 					<a href="{{path('cart_show')}}" class="nav-link active">
 						<i class="fas fa-shopping-cart"></i>
@@ -87,9 +87,14 @@ bootstrap nav #}
 					</a>
 				</li>
 				{% if app.user %}
-					<li class="nav-item active">
+					{# <li class="nav-item active">
 						<a class="nav-link" href="{{path('purchases_index')}}">
 							MES COMMANDES
+						</a>
+					</li> #}
+					<li class="nav-item active">
+						<a class="nav-link" href="{{path('app_account')}}">
+							MON PROFIL
 						</a>
 					</li>
 					<li class="nav-item active">
